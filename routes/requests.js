@@ -16,4 +16,21 @@ router.get('/', function(req, res, next) {
 	});
 });
 
+router.get('/:request_id', function(req, res, next) {
+	var id = req.params.request_id;
+
+	r.connect({host: '192.168.99.100', port: 32775, db: 'biotechne'}, function(err, conn) {
+		if (err) throw err;
+		r.table('requests').filter({id: id}).eqJoin('type', r.table('burritos')).zip().run(conn, function(err, cursor) {
+			if (err) throw err;
+			cursor.toArray(function(err, results) {
+				if (err) throw err;
+				console.log(results);
+				res.render('request', {result: results, title: 'User'});
+			});
+		});
+	});
+
+});
+
 module.exports = router;

@@ -1,7 +1,7 @@
 extends layout
 
 block content
-	h1= 'Burritos'
+	h1= 'Request'
 	ul
 		each val in result
-			li= val.type
+			li= val.quantity + ' ' + val.type
